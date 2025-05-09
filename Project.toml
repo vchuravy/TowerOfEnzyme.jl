@@ -1,0 +1,10 @@
+name = "TowerOfEnzyme"
+uuid = "42b7b2d3-c73e-45b7-822c-d9186d944e94"
+authors = ["Valentin Churavy <v.churavy@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Enzyme = "7da242da-08ed-463a-9acd-ee780be4f1d9"
+
+[compat]
+Enzyme = "0.13.41"
