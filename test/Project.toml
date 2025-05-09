@@ -1,3 +1,8 @@
 [deps]
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+TaylorDiff = "b36ab563-344f-407b-a36a-4f200bebf99c"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+TowerOfEnzyme = "42b7b2d3-c73e-45b7-822c-d9186d944e94"
+
+[sources]
+TowerOfEnzyme = {path = ".."}
