@@ -2,7 +2,7 @@
 
 using BenchmarkTools
 
-include("benchmark.jl")
+include("benchmarks.jl")
 
 tune!(SUITE)
 results = run(SUITE, verbose = true)
