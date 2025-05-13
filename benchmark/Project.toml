@@ -1,0 +1,6 @@
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+TowerOfEnzyme = "42b7b2d3-c73e-45b7-822c-d9186d944e94"
+
+[sources]
+TowerOfEnzyme = {path = ".."}
