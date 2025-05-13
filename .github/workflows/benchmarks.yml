@@ -31,20 +31,20 @@ jobs:
       - uses: julia-actions/cache@v2
       - name: Instantiate benchmark
         run: |
-          cd benchmarks
+          cd benchmark
           julia --project --color=yes -e '
             using Pkg;
             Pkg.instantiate()'
       - name: Run benchmark
         run: |
-          cd benchmarks
-          julia --project --color=yes runbenchmark.jl
+          cd benchmark
+          julia --project --color=yes runbenchmarks.jl
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1
         with:
           name: Julia benchmark result
           tool: 'julia'
-          output-file-path: benchmarks/output.json
+          output-file-path: benchmark/output.json
           # Use personal access token instead of GITHUB_TOKEN due to https://github.community/t/github-action-not-triggering-gh-pages-upon-push/16096
           github-token: ${{ secrets.GITHUB_TOKEN }}
           auto-push: true
