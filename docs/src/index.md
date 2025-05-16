@@ -7,7 +7,7 @@ nth_derivative
 derivative_bundle
 ```
 
-## Parameters
+## Helper functions
 
 ```@docs
 jvp
