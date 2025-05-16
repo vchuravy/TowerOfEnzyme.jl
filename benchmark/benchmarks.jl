@@ -15,14 +15,14 @@ end
 const SUITE = BenchmarkGroup()
 
 SUITE["sin"] = BenchmarkGroup()
-SUITE["sin"]["primal"] = sin(1.0)
+SUITE["sin"]["primal"] = sin($(Ref(1.0))[])
 SUITE["sin"]["TowerOfEnzyme"] =  BenchmarkGroup()
 SUITE["sin"]["ForwardDiff"] =  BenchmarkGroup()
 SUITE["sin"]["TaylorDiff"] =  BenchmarkGroup()
 
 function create_benchmark_sin(group, nth_derivative)
     for order in (1, 2, 4, 8, 13)
-        group["order = $order"] = @benchmarkable $(nth_derivative)(sin, 1.0, Val($order))
+        group["order = $order"] = @benchmarkable $(nth_derivative)(sin, $(Ref(1.0))[], Val($order))
     end
 end
 
