@@ -1,0 +1,42 @@
+name: Documentation
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags: "*"
+
+# needed to allow julia-actions/cache to delete old caches that it has created
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: "1"
+      - uses: julia-actions/cache@v2
+      - name: instantiate docs
+        run: |
+          julia --project=docs -e '
+            using Pkg
+            Pkg.instantiate()
+          '
+      - name: run doctests
+        run: |
+          julia --project=docs -e '
+            using Documenter: DocMeta, doctest
+            using TowerOfEnzyme
+            DocMeta.setdocmeta!(TowerOfEnzyme, :DocTestSetup, :(using TowerOfEnzyme); recursive=true)
+            doctest(TowerOfEnzyme)
+          '
+      - name: generate docs
+        run: julia --project=docs docs/make.jl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
