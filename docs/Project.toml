@@ -1,0 +1,9 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterCitations = "daee34ce-89f3-4625-b898-19384cb65244"
+Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
+TowerOfEnzyme = "42b7b2d3-c73e-45b7-822c-d9186d944e94"
+PlutoStaticHTML = "359b1769-a58e-495b-9770-312e911026ad"
+
+[sources]
+TowerOfEnzyme = {path = ".."}
