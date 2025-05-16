@@ -15,7 +15,7 @@ end
 const SUITE = BenchmarkGroup()
 
 SUITE["sin"] = BenchmarkGroup()
-SUITE["sin"]["primal"] = sin($(Ref(1.0))[])
+SUITE["sin"]["primal"] = @benchmarkable sin($(Ref(1.0))[])
 SUITE["sin"]["TowerOfEnzyme"] =  BenchmarkGroup()
 SUITE["sin"]["ForwardDiff"] =  BenchmarkGroup()
 SUITE["sin"]["TaylorDiff"] =  BenchmarkGroup()
