@@ -45,8 +45,25 @@ end
 nth_derivative(f::F, x::T, dx::NTuple{N, T}) where {F, N, T} = nth_derivative(f, x, dx, Val(N))
 
 # Helper functions
+"""
+    jvp(f, x, v)
+
+Calculate the Jacobian-Vector-Product ``J_f(x) * v``
+"""
 jvp(f, x, v) = nth_derivative(f, x, v, Val(1))
+
+"""
+    hvvp(f, x, v)
+
+Calculate the Hessian-Vector-Vector product ``H_f(x) * v * v``
+"""
 hvvp(f, x, v) = nth_derivative(f, x, v, Val(2))
+
+"""
+    hvvp(f, x, v₁, v₂)
+
+Calculate the Hessian-Vector-Vector product ``H_f(x) * v₁ * v₂``
+"""
 hvvp(f, x, v₁, v₂) = nth_derivative(f, x, (v₁, v₂), Val(2))
 
 """
