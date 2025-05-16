@@ -1,5 +1,7 @@
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+TaylorDiff = "b36ab563-344f-407b-a36a-4f200bebf99c"
 TowerOfEnzyme = "42b7b2d3-c73e-45b7-822c-d9186d944e94"
 
 [sources]
