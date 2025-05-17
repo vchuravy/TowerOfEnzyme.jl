@@ -43,7 +43,7 @@ jobs:
       - uses: julia-actions/setup-julia@v2
         with:
           version: '1'
-          arch: 'x86'
+          arch: 'x64'
       - uses: julia-actions/cache@v2
       - name: Setup
         if: steps.filter.outputs.benchmark == 'true'
