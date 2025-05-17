@@ -8,3 +8,4 @@ Enzyme = "7da242da-08ed-463a-9acd-ee780be4f1d9"
 
 [compat]
 Enzyme = "0.13.41"
+julia = "1.10"
