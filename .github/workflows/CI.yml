@@ -29,3 +29,27 @@ jobs:
       - uses: julia-actions/cache@v2
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
+
+  benchmarks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            benchmark:
+              - 'benchmark/**'
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+          arch: 'x64'
+      - uses: julia-actions/cache@v2
+      - name: Setup
+        if: steps.filter.outputs.benchmark == 'true'
+        run: |
+          julia --project=benchmark -e "import Pkg; Pkg.instantiate()"
+      - name: Execute
+        if: steps.filter.outputs.benchmark == 'true'
+        run: |
+          julia --project=benchmark benchmark/runbenchmarks.jl
