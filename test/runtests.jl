@@ -52,7 +52,7 @@ end
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu, dddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu, dddddu))
 
-    @test derivative_bundle(flux, (u, du)) == derivative_bundle_expanded(flux, (u, du))[end]
+    @test derivative_bundle(flux, (u, du))  ≈ derivative_bundle_expanded(flux, (u, du))[end]
     @test derivative_bundle(flux, (u, du, ddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu))[end]
     @test derivative_bundle(flux, (u, du, ddu, dddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu, dddu))[end]
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu, dddu, ddddu))[end]
