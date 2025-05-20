@@ -38,7 +38,7 @@ end
 
 @testset "flux" begin
     u = SVector(1.0, -0.1, 0.2, 2.0)
-    du, ddu, dddu, ddddu = (1.0e-3 * SVector(rand(4)...) for _ in 1:4)
+    du, ddu, dddu, ddddu, dddddu = (SVector(rand(4)...) for _ in 1:5)
 
     @test TaylorDiff.derivative(flux, u, du, Val(1)) ≈ jvp(flux, u, du)
     @test TaylorDiff.derivative(flux, u, du, Val(2)) ≈ hvvp(flux, u, du)
@@ -50,4 +50,5 @@ end
     @test derivative_bundle(flux, (u, du, ddu)) ≈ taylor_diff(flux, (u, du, ddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu))
+    @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu, dddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu, dddddu))
 end
