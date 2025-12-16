@@ -51,4 +51,18 @@ end
     @test derivative_bundle(flux, (u, du, ddu, dddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu, dddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu, dddddu))
+
+    @test derivative_bundle(flux, (u, du))  ≈ derivative_bundle_expanded(flux, (u, du))[end]
+    @test derivative_bundle(flux, (u, du, ddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu))[end]
+    @test derivative_bundle(flux, (u, du, ddu, dddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu, dddu))[end]
+    @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu, dddu, ddddu))[end]
+    @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu, dddddu)) ≈ derivative_bundle_expanded(flux, (u, du, ddu, dddu, ddddu, dddddu))[end]
+
+    f, f′, f′′, f′′′, f′′′′, f′′′′′ = derivative_bundle_expanded(flux, (u, du, ddu, dddu, ddddu, dddddu))
+    @test f == flux(u)
+    @test f′ ≈ derivative_bundle(flux, (u, du))
+    @test f′′ ≈ derivative_bundle(flux, (u, du, ddu))
+    @test f′′′ ≈ derivative_bundle(flux, (u, du, ddu, dddu))
+    @test f′′′′ ≈ derivative_bundle(flux, (u, du, ddu, dddu, ddddu))
+    @test f′′′′′ ≈ derivative_bundle(flux, (u, du, ddu, dddu, ddddu, dddddu))
 end
