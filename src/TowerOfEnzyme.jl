@@ -63,4 +63,20 @@ Calculates the higher-order pushforward.
     ) |> only
 end
 
+@inline function derivative_bundle!(f!::F, out::NTuple{N}, bundle::NTuple{N}) where {F, N}
+    if length(bundle) == 1
+        return f!(out[1], bundle[1])
+    end
+    dbundle = bundle[2:end]
+    bundle = bundle[1:(end - 1)]
+    dout = out[2:end]
+    out = out[1:(end - 1)]
+    return autodiff(
+        Enzyme.set_abi(Forward, Enzyme.InlineABI),
+        derivative_bundle!, Const(f!),
+        Duplicated(out, dout),
+        Duplicated(bundle, dbundle)
+    ) |> only
+end
+
 end # module TowerOfEnzyme

@@ -36,6 +36,19 @@ end
     return SVector(f1, f2, f3, f4)
 end
 
+@inline function flux!(out, u)
+    rho, rho_v1, rho_v2, rho_e = u
+    gamma = 1.4
+    v1 = rho_v1 / rho
+    v2 = rho_v2 / rho
+    p = (gamma - 1) * (rho_e - 0.5f0 * (rho_v1 * v1 + rho_v2 * v2))
+    out[1] = rho_v1
+    out[2] = rho_v1 * v1 + p
+    out[3] = rho_v1 * v2
+    out[4] = (rho_e + p) * v1
+    return nothing
+end
+
 @testset "flux" begin
     u = SVector(1.0, -0.1, 0.2, 2.0)
     du, ddu, dddu, ddddu, dddddu = (SVector(rand(4)...) for _ in 1:5)
@@ -51,4 +64,37 @@ end
     @test derivative_bundle(flux, (u, du, ddu, dddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu))
     @test derivative_bundle(flux, (u, du, ddu, dddu, ddddu, dddddu)) ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu, dddddu))
+end
+
+@testset "flux!" begin
+    u = SVector(1.0, -0.1, 0.2, 2.0)
+    du, ddu, dddu, ddddu = (SVector(rand(4)...) for _ in 1:4)
+
+    out = MVector{Float64}(undef, 4)
+    dout = MVector{Float64}(undef, 4)
+    ddout = MVector{Float64}(undef, 4)
+    dddout = MVector{Float64}(undef, 4)
+    ddddout = MVector{Float64}(undef, 4)
+
+    derivative_bundle!(flux!, (out, dout), (u, du))
+    @test out ≈ flux(u)
+    @test dout ≈ jvp(flux, u, du)
+
+    derivative_bundle!(flux!, (out, dout, ddout), (u, du, ddu))
+    @test out ≈ flux(u)
+    @test dout ≈ jvp(flux, u, ddu)
+    @test ddout ≈ hvvp(flux, u, du) + jvp(flux, u, ddu)
+
+    derivative_bundle!(flux!, (out, dout, ddout, dddout), (u, du, ddu, dddu))
+    @test out ≈ flux(u)
+    @test dout ≈ jvp(flux, u, ddu)
+    @test ddout ≈ hvvp(flux, u, du) + jvp(flux, u, ddu)
+    @test dddout ≈ taylor_diff(flux, (u, du, ddu, dddu))
+
+    derivative_bundle!(flux!, (out, dout, ddout, dddout, ddddout), (u, du, ddu, dddu, ddddu))
+    @test out ≈ flux(u)
+    @test dout ≈ jvp(flux, u, ddu)
+    @test ddout ≈ hvvp(flux, u, du) + jvp(flux, u, ddu)
+    @test dddout ≈ taylor_diff(flux, (u, du, ddu, dddu))
+    @test ddddout ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu))
 end
