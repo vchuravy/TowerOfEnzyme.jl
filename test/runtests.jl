@@ -74,6 +74,7 @@ end
     dout = similar(du)
     ddout = similar(ddu)
     dddout = similar(dddu)
+    ddddout = similar(ddddu)
 
     derivative_bundle!(flux!, (out, dout), (u, du))
     @test out ≈ flux(u)
@@ -81,18 +82,18 @@ end
 
     derivative_bundle!(flux!, (out, dout, ddout), (u, du, ddu))
     @test out ≈ flux(u)
-    @test dout ≈ jvp(flux, u, ddu)
+    @test dout ≈ jvp(flux, u, du)
     @test ddout ≈ hvvp(flux, u, du) + jvp(flux, u, ddu)
 
     derivative_bundle!(flux!, (out, dout, ddout, dddout), (u, du, ddu, dddu))
     @test out ≈ flux(u)
-    @test dout ≈ jvp(flux, u, ddu)
+    @test dout ≈ jvp(flux, u, du)
     @test ddout ≈ hvvp(flux, u, du) + jvp(flux, u, ddu)
     @test dddout ≈ taylor_diff(flux, (u, du, ddu, dddu))
 
     derivative_bundle!(flux!, (out, dout, ddout, dddout, ddddout), (u, du, ddu, dddu, ddddu))
     @test out ≈ flux(u)
-    @test dout ≈ jvp(flux, u, ddu)
+    @test dout ≈ jvp(flux, u, du)
     @test ddout ≈ hvvp(flux, u, du) + jvp(flux, u, ddu)
     @test dddout ≈ taylor_diff(flux, (u, du, ddu, dddu))
     @test ddddout ≈ taylor_diff(flux, (u, du, ddu, dddu, ddddu))
