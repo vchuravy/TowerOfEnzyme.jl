@@ -70,11 +70,10 @@ end
     u = SVector(1.0, -0.1, 0.2, 2.0)
     du, ddu, dddu, ddddu = (SVector(rand(4)...) for _ in 1:4)
 
-    out = MVector{Float64}(undef, 4)
-    dout = MVector{Float64}(undef, 4)
-    ddout = MVector{Float64}(undef, 4)
-    dddout = MVector{Float64}(undef, 4)
-    ddddout = MVector{Float64}(undef, 4)
+    out = similar(u)
+    dout = similar(du)
+    ddout = similar(ddu)
+    dddout = similar(dddu)
 
     derivative_bundle!(flux!, (out, dout), (u, du))
     @test out ≈ flux(u)
