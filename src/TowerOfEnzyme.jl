@@ -3,7 +3,7 @@ module TowerOfEnzyme
 using Enzyme
 
 export nth_derivative, jvp, hvvp
-export derivative_bundle
+export derivative_bundle, derivative_bundle!
 
 """
     nth_derivative(f, x, Val(Order))
