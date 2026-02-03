@@ -3,7 +3,7 @@ module TowerOfEnzyme
 using Enzyme
 
 export nth_derivative, jvp, hvvp
-export derivative_bundle
+export derivative_bundle, derivative_bundle!
 
 """
     nth_derivative(f, x, Val(Order))
@@ -61,6 +61,24 @@ Calculates the higher-order pushforward.
         derivative_bundle, Const(f),
         Duplicated(bundle, dbundle)
     ) |> only
+end
+
+@inline function derivative_bundle!(f!::F, out::NTuple{N}, bundle::NTuple{N}) where {F, N}
+    if length(bundle) == 1
+        f!(out[1], bundle[1])
+        return nothing
+    end
+    dbundle = bundle[2:end]
+    bundle = bundle[1:(end - 1)]
+    dout = out[2:end]
+    out = out[1:(end - 1)]
+    autodiff(
+        Enzyme.set_abi(Forward, Enzyme.InlineABI),
+        derivative_bundle!, Const(f!),
+        Duplicated(out, dout),
+        Duplicated(bundle, dbundle)
+    )
+    return nothing
 end
 
 end # module TowerOfEnzyme
